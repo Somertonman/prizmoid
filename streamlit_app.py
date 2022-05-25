@@ -8,7 +8,6 @@ st.set_page_config(
 )
 
 z = 2
-types = "jpg", "jpeg", "png"
 
 
 # 'Screens'
@@ -64,7 +63,7 @@ def show_gallery_of_styles():
     :return:
     """
     images_glob = os.listdir("styles/")
-    images_glob = [x for x in images_glob if x.endswith(types)]
+    images_glob = [x for x in images_glob if x.endswith(("jpg", "jpeg", "png"))]
 
     for i in range(len(images_glob)):
         cols = st.columns(2)
@@ -81,7 +80,7 @@ if page == 'upload_style':
 
 elif page == "transfer_style":
     images_glob = os.listdir("styles/")
-    images_glob = set([x for x in images_glob if x.endswith(types)])
+    images_glob = set([x for x in images_glob if x.endswith(("jpg", "jpeg", "png"))])
     style_img = st.radio('Choose style', images_glob)
     style_image_url = "styles/" + style_img
 
