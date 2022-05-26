@@ -1,9 +1,12 @@
+import streamlit as st
+
 import tensorflow as tf
 import numpy as np
 import PIL.Image
 import os
 import requests
 import tensorflow_hub as hub
+import pathlib
 
 os.environ['TFHUB_MODEL_LOAD_FORMAT'] = 'COMPRESSED'
 
@@ -12,8 +15,8 @@ hub_model = hub.load(hub_handle)
 
 
 def show_image(image_file):
- img = PIL.Image.open(image_file)
- return img
+    img = PIL.Image.open(image_file)
+    return img
 
 
 def load_img(path_to_img: str):
@@ -59,17 +62,21 @@ def save_new_image_style(style_file, style_file_name):
     :param style_file_name:
     :return:
     """
-    image = PIL.Image.open(style_file)
+    for filename in os.listdir('styles'):
+        if filename == style_file_name:
+            st.write(f'Стиль с именем "{style_file_name}" уже существует')
+
+    image = PIL.Image.open(pathlib.Path(f"styles/{style_file}"))
     rgb_im = image.convert('RGB')
     new_file_name = os.path.join("styles/", style_file_name + '.jpg')
     rgb_im.save(new_file_name, format="JPEG")
     return new_file_name
 
+
 def save_user_image(image):
     """
 
-    :param style_file:
-    :param style_file_name:
+    :param image:
     :return:
     """
     image = PIL.Image.open(image)
@@ -77,6 +84,7 @@ def save_user_image(image):
     new_file_name = os.path.join("/", "user_file" + '.jpg')
     rgb_im.save(new_file_name, format="JPEG")
     return new_file_name
+
 
 def download_file(url, local_filename):
     """
@@ -86,11 +94,11 @@ def download_file(url, local_filename):
     :return:
     """
     r = requests.get(url)
-    f = open(f'/styles/{local_filename}', 'wb')
-    for chunk in r.iter_content(chunk_size=512 * 1024):
-        if chunk:  # filter out keep-alive new chunks
-            f.write(chunk)
-    f.close()
+    with open(os.path.join("styles", local_filename + '.jpg'), 'wb') as f:
+        for chunk in r.iter_content(chunk_size=512 * 1024):
+            if chunk:  # filter out keep-alive new chunks
+                f.write(chunk)
+    local_filename = local_filename + '.jpg'
     return local_filename
 
 

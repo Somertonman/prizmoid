@@ -7,8 +7,6 @@ st.set_page_config(
     page_icon="🎈",
 )
 
-z = 2
-
 
 # 'Screens'
 # Upload style image and save file in /styles
@@ -18,14 +16,14 @@ def upload_style_image():
 
     :return:
     """
-    style_file_name = st.text_input("Name your style", 'name')
-    original_image_url = st.text_input("Please upload style image from URL", )
+    style_file_name = st.text_input("Name your style", 'My perfect style')
+    original_image_url = st.text_input("Upload your style image from URL", )
 
     if st.button("Upload"):
         style_file = download_file(original_image_url, style_file_name)
         new_file_name = save_new_image_style(style_file, style_file_name)
-        st.write(new_file_name)
-        st.success("Saved File")
+        st.success("Done!")
+        st.success(f"File Saved in {new_file_name}")
 
 
 def upload_your_image():
