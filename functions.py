@@ -86,7 +86,7 @@ def save_user_image(image):
     return new_file_name
 
 
-def download_file(url, local_filename):
+def download_style_file(url, local_filename):
     """
 
     :param url:
