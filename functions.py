@@ -1,11 +1,14 @@
+import numpy as np
+
 import streamlit as st
 
 import tensorflow as tf
-import numpy as np
-import PIL.Image
+import tensorflow_hub as hub
+from io import BytesIO
+
+from PIL import Image
 import os
 import requests
-import tensorflow_hub as hub
 import pathlib
 
 os.environ['TFHUB_MODEL_LOAD_FORMAT'] = 'COMPRESSED'
@@ -15,7 +18,7 @@ hub_model = hub.load(hub_handle)
 
 
 def show_image(image_file):
-    img = PIL.Image.open(image_file)
+    img = Image.open(image_file)
     return img
 
 
@@ -41,6 +44,26 @@ def load_img(path_to_img: str):
     return img
 
 
+def load_img_from_url(user_image_from_url):
+    """
+
+    :param user_image_from_url: jpeg file
+    :return:
+    """
+    max_dim = 512
+
+    img = np.array(user_image_from_url)
+    shape = tf.cast(tf.shape(img)[:-1], tf.float32)
+    long_dim = max(shape)
+    scale = max_dim / long_dim
+
+    new_shape = tf.cast(shape * scale, tf.int32)
+
+    img = tf.image.resize(img, new_shape)
+    img = img[tf.newaxis, :]
+    return img
+
+
 def tensor_to_image(tensor):
     """
 
@@ -52,7 +75,7 @@ def tensor_to_image(tensor):
     if np.ndim(tensor) > 3:
         assert tensor.shape[0] == 1
         tensor = tensor[0]
-    return PIL.Image.fromarray(tensor)
+    return Image.fromarray(tensor)
 
 
 def save_new_image_style(style_file, style_file_name):
@@ -64,9 +87,9 @@ def save_new_image_style(style_file, style_file_name):
     """
     for filename in os.listdir('styles'):
         if filename == style_file_name:
-            st.write(f'Стиль с именем "{style_file_name}" уже существует')
+            st.write(f'A style named "{style_file_name}" already exists')
 
-    image = PIL.Image.open(pathlib.Path(f"styles/{style_file}"))
+    image = Image.open(pathlib.Path(f"styles/{style_file}"))
     rgb_im = image.convert('RGB')
     new_file_name = os.path.join("styles/", style_file_name + '.jpg')
     rgb_im.save(new_file_name, format="JPEG")
@@ -79,7 +102,7 @@ def save_user_image(image):
     :param image:
     :return:
     """
-    image = PIL.Image.open(image)
+    image = Image.open(image)
     rgb_im = image.convert('RGB')
     new_file_name = os.path.join("/", "user_file" + '.jpg')
     rgb_im.save(new_file_name, format="JPEG")

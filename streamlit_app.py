@@ -25,38 +25,40 @@ def upload_style_image():
         st.success("Done!")
         st.success(f"File Saved in {new_file_name}")
 
-def restyle(image_file):
+def get_user_image_from_url(url):
+  response = requests.get(url)
+  img = Image.open(BytesIO(response.content))
+  return img
+
+def restyle_downloaded(image_file):
     if st.button('Restyle'):
         file_user_path = save_user_image(image_file)
-        content_image = load_img(file_user_path)
+        user_image = load_img(file_user_path)
         style_image = load_img(style_image_url)
-        final_img = transfer_style(content_image, style_image)
+        final_img = transfer_style(user_image, style_image)
         st.image(final_img)
 
-def upload_your_image():
+
+def uploader_user_image():
+    pass
     """
 
     :return:
     """
-    menu = ["Upload", "Web link"]
-    choice = st.sidebar.selectbox("Upload/use link", menu)
-    if choice == "Upload":
-        downloaded_user_image_file = st.file_uploader("Upload Images", type=["jpg", "jpeg", "png"])
-        if downloaded_user_image_file:
-            st.image(show_image(downloaded_user_image_file))
-            restyle(downloaded_user_image_file)
 
-    if choice == "Web link":
 
-        st.write('This feature in progress')
-        # original_image_url = st.text_input("Style image from URL", )
-        # if st.button('Restyle'):
-        #     uploaded_image = download_file(original_image_url, "original.jpg")
-        #     st.image(uploaded_image)
-        #     content_image = load_img("original.jpg")
-        #     style_image = load_img(style_image_url)
-        #     final_img = transfer_style(content_image, style_image)
-        #     st.image(final_img)
+    # if choice == "Web link":
+    #     st.write('This feature in progress')
+    # original_image_url = st.text_input("Style image from URL", )
+    # if st.button('Restyle'):
+    #     uploaded_image = download_file(original_image_url, "original.jpg")
+    #     st.image(uploaded_image)
+    #     content_image = load_img("original.jpg")
+    #     style_image = load_img(style_image_url)
+    #     final_img = transfer_style(content_image, style_image)
+    #     st.image(final_img)
+
+# def get_user_image_from_url(url):
 
 
 def show_gallery_of_styles():
@@ -87,25 +89,25 @@ elif page == "transfer_style":
     style_image_url = "styles/" + style_img
 
     # original_image = upload_your_image()
+    menu = ["Upload", "Web link"]
+    choice = st.sidebar.selectbox("Upload/Use link", menu)
 
-    upload_your_image()
+    if choice == "Upload":
+        downloaded_user_image_file = st.file_uploader("Upload Images", type=["jpg", "jpeg", "png"])
+        if downloaded_user_image_file:
+            st.image(show_image(downloaded_user_image_file))
+            restyle_downloaded(downloaded_user_image_file)
 
-    #     if st.button('Restyle'):
-    #         uploaded_image = download_file(original_image, "original.jpg")
-    #         st.image(uploaded_image)
-    #         content_image = load_img("original.jpg")
-    #         style_image = load_img(style_image_url)
-    #         final_img = transfer_style(content_image, style_image)
-    #         st.image(final_img)
-    # original_image_url = st.text_input("Style image from URL", )
-    #
-    # if st.button('Restyle'):
-    #     uploaded_image = download_file(original_image_url, "original.jpg")
-    #     st.image(uploaded_image)
-    #     content_image = load_img("original.jpg")
-    #     style_image = load_img(style_image_url)
-    #     final_img = transfer_style(content_image, style_image)
-    #     st.image(final_img)
+    if choice == "Web link":
+        original_image_url = st.text_input("Upload your image from URL", )
+        if original_image_url:
+            user_image_from_url = get_user_image_from_url(original_image_url)
+            st.image(user_image_from_url)
+            if st.button('Restyle'):
+                user_image = load_img_from_url(user_image_from_url)
+                style_image = load_img(style_image_url)
+                final_img = transfer_style(user_image, style_image)
+                st.image(final_img)
 
     st.header('Styles gallery')
     show_gallery_of_styles()
