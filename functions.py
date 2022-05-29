@@ -22,17 +22,8 @@ def show_image(image_file):
     return img
 
 
-def load_img(path_to_img: str):
-    """
-
-    :param path_to_img:
-    :return:
-    """
+def resize(img):
     max_dim = 512
-    img = tf.io.read_file(path_to_img)
-    img = tf.image.decode_image(img, channels=3)
-    img = tf.image.convert_image_dtype(img, tf.float32)
-
     shape = tf.cast(tf.shape(img)[:-1], tf.float32)
     long_dim = max(shape)
     scale = max_dim / long_dim
@@ -44,23 +35,27 @@ def load_img(path_to_img: str):
     return img
 
 
-def load_img_from_url(user_image_from_url):
+def prepare_image_uploader(path_to_img: str):
+    """
+
+    :param path_to_img:
+    :return:
+    """
+    img = tf.io.read_file(path_to_img)
+    img = tf.image.decode_image(img, channels=3)
+    img = tf.image.convert_image_dtype(img, tf.float32)
+    img = resize(img)
+    return img
+
+
+def prepare_image_url(user_image_from_url):
     """
 
     :param user_image_from_url: jpeg file
     :return:
     """
-    max_dim = 512
-
     img = np.array(user_image_from_url)
-    shape = tf.cast(tf.shape(img)[:-1], tf.float32)
-    long_dim = max(shape)
-    scale = max_dim / long_dim
-
-    new_shape = tf.cast(shape * scale, tf.int32)
-
-    img = tf.image.resize(img, new_shape)
-    img = img[tf.newaxis, :]
+    img = resize(img)
     return img
 
 
@@ -135,3 +130,32 @@ def transfer_style(content_image, style_image):
     stylized_image = hub_model(tf.constant(content_image), tf.constant(style_image))[0]
     final_img = tensor_to_image(stylized_image)
     return final_img
+
+
+def show_gallery_of_styles():
+    """
+
+    :return:
+    """
+    images_glob = os.listdir("styles/")
+    images_glob = [x for x in images_glob if x.endswith(("jpg", "jpeg", "png"))]
+
+    for i in range(len(images_glob)):
+        cols = st.columns(2)
+        cols[0].image("styles/" + images_glob[i], width=200)
+        cols[1].write(images_glob[i].rsplit('.', 1)[0])
+
+
+def get_user_image_from_url(url):
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
+    return img
+
+
+def restyle_downloaded(style_image_url, image_file):
+    if st.button('Restyle'):
+        file_user_path = save_user_image(image_file)
+        user_image = prepare_image_uploader(file_user_path)
+        style_image = prepare_image_uploader(style_image_url)
+        final_img = transfer_style(user_image, style_image)
+        st.image(final_img)
