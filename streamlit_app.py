@@ -40,11 +40,7 @@ elif page == "transfer_style":
         if original_image_url:
             user_image_from_url = get_user_image_from_url(original_image_url)
             st.image(user_image_from_url)
-            if st.button('Restyle'):
-                user_image = prepare_image_url(user_image_from_url)
-                style_image = prepare_image_uploader(style_image_url)
-                final_img = transfer_style(user_image, style_image)
-                st.image(final_img)
+            restyle_from_url(style_image_url, user_image_from_url)
 
     st.header('Styles gallery')
     show_gallery_of_styles()
