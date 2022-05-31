@@ -1,6 +1,2 @@
 def test_1():
-    pass
-
-
-def test_2():
-    pass
+    assert 1+1 == 2
