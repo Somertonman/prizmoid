@@ -146,7 +146,7 @@ def show_gallery_of_styles():
         cols[1].write(images_glob[i].rsplit('.', 1)[0])
 
 
-def get_user_image_from_url(url):
+def get_user_image_from_url(url: str):
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
     return img
@@ -159,6 +159,7 @@ def restyle_downloaded(style_image_url, image_file):
         style_image = prepare_image_uploader(style_image_url)
         final_img = transfer_style(user_image, style_image)
         st.image(final_img)
+
 
 def restyle_from_url(style_image_url, user_image_from_url):
     if st.button('Restyle'):
