@@ -9,6 +9,7 @@ st.set_page_config(
 page = st.sidebar.radio('Choose action',
                         ('transfer_style', 'upload_style'))
 
+# add custom user style to gallery
 if page == 'upload_style':
     st.header('Upload new style')
     style_file_name = st.text_input("Name your style", 'My perfect style')
