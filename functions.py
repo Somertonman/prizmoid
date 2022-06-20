@@ -35,13 +35,15 @@ def resize(img):
     return img
 
 
-def prepare_image_uploader(path_to_img: str):
+def prepare_image_uploader(image_file):
+=======
+def show_image(image_file):
     """
 
-    :param path_to_img:
+    :param image_file:
     :return:
     """
-    img = tf.io.read_file(path_to_img)
+    img = tf.io.read_file(image_file)
     img = tf.image.decode_image(img, channels=3)
     img = tf.image.convert_image_dtype(img, tf.float32)
     img = resize(img)
