@@ -58,6 +58,11 @@ def prepare_image_uploader(path_to_img: str):
     return img
 
 
+def test_prepare_image_uploader():
+    t_img = 'styles/test_img.jpg'
+    assert np.sum(prepare_image_uploader(t_img)) == 702898.5
+
+
 def prepare_image_url(user_image_from_url):
     """
     resizing image
@@ -194,3 +199,15 @@ def restyle_from_url(style_image_url, user_image_from_url):
         style_image = prepare_image_uploader(style_image_url)
         final_img = transfer_style(user_image, style_image)
         st.image(final_img)
+
+        
+def test_restyle_from_url():
+    link = "https://klike.net/uploads/posts/2020-04/1587719791_1.jpg"
+    style_img = "Василий Кандинский, Композиция 4.jpg"
+    style_image_url = "styles/" + style_img
+    user_image_from_url = get_user_image_from_url(link)
+    
+    user_image = prepare_image_url(user_image_from_url)
+    style_image = prepare_image_uploader(style_image_url)
+    final_img = transfer_style(user_image, style_image)
+    assert np.sum(final_img) == 115081674
