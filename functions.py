@@ -19,7 +19,7 @@ hub_model = hub.load(hub_handle)
 
 def show_image(image_file):
     '''
-
+    show_image
     :param image_file:
     :return:
     '''
@@ -29,7 +29,7 @@ def show_image(image_file):
 
 def resize(img):
     '''
-
+    resize image
     :param img:
     :return:
     '''
@@ -47,7 +47,7 @@ def resize(img):
 
 def prepare_image_uploader(path_to_img: str):
     """
-
+    prepare image to transfer style
     :param path_to_img:
     :return:
     """
@@ -60,7 +60,7 @@ def prepare_image_uploader(path_to_img: str):
 
 def prepare_image_url(user_image_from_url):
     """
-
+    resizing image
     :param user_image_from_url: jpeg file
     :return:
     """
@@ -71,7 +71,7 @@ def prepare_image_url(user_image_from_url):
 
 def tensor_to_image(tensor):
     """
-
+    prepare image to tensorflow restyle algorithm
     :param tensor:
     :return:
     """
@@ -85,7 +85,7 @@ def tensor_to_image(tensor):
 
 def save_new_image_style(style_file, style_file_name):
     """
-
+    add new style image to gallery
     :param style_file:
     :param style_file_name:
     :return:
@@ -103,7 +103,7 @@ def save_new_image_style(style_file, style_file_name):
 
 def save_user_image(image):
     """
-
+    save_user_image to restyle
     :param image:
     :return:
     """
@@ -116,7 +116,7 @@ def save_user_image(image):
 
 def download_style_file(url, local_filename):
     """
-
+    download new style image to gallery
     :param url:
     :param local_filename:
     :return:
@@ -132,7 +132,7 @@ def download_style_file(url, local_filename):
 
 def transfer_style(content_image, style_image):
     """
-
+    transforming image to style
     :param content_image:
     :param style_image:
     :return:
@@ -144,7 +144,7 @@ def transfer_style(content_image, style_image):
 
 def show_gallery_of_styles():
     """
-
+    show gallery of styles application
     :return:
     """
     images_glob = os.listdir("styles/")
@@ -158,7 +158,7 @@ def show_gallery_of_styles():
 
 def get_user_image_from_url(url: str):
     '''
-
+    get user image from url
     :param url:
     :return:
     '''
@@ -169,7 +169,7 @@ def get_user_image_from_url(url: str):
 
 def restyle_downloaded(style_image_url, image_file):
     '''
-
+    restyle user downloaded image by style image
     :param style_image_url:
     :param image_file:
     :return:
@@ -184,7 +184,7 @@ def restyle_downloaded(style_image_url, image_file):
 
 def restyle_from_url(style_image_url, user_image_from_url):
     '''
-
+    restyle user image from URL by style image
     :param style_image_url:
     :param user_image_from_url:
     :return:
