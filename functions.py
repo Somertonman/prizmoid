@@ -18,21 +18,21 @@ hub_model = hub.load(hub_handle)
 
 
 def show_image(image_file):
-    '''
+    """
     show_image
     :param image_file:
     :return:
-    '''
+    """
     img = Image.open(image_file)
     return img
 
 
 def resize(img):
-    '''
+    """
     resize image
     :param img:
     :return:
-    '''
+    """
     max_dim = 512
     shape = tf.cast(tf.shape(img)[:-1], tf.float32)
     long_dim = max(shape)
@@ -157,23 +157,23 @@ def show_gallery_of_styles():
 
 
 def get_user_image_from_url(url: str):
-    '''
+    """
     get user image from url
     :param url:
     :return:
-    '''
+    """
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
     return img
 
 
 def restyle_downloaded(style_image_url, image_file):
-    '''
+    """
     restyle user downloaded image by style image
     :param style_image_url:
     :param image_file:
     :return:
-    '''
+    """
     if st.button('Restyle'):
         file_user_path = save_user_image(image_file)
         user_image = prepare_image_uploader(file_user_path)
@@ -183,12 +183,12 @@ def restyle_downloaded(style_image_url, image_file):
 
 
 def restyle_from_url(style_image_url, user_image_from_url):
-    '''
+    """
     restyle user image from URL by style image
     :param style_image_url:
     :param user_image_from_url:
     :return:
-    '''
+    """
     if st.button('Restyle'):
         user_image = prepare_image_url(user_image_from_url)
         style_image = prepare_image_uploader(style_image_url)
