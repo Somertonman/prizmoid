@@ -18,11 +18,21 @@ hub_model = hub.load(hub_handle)
 
 
 def show_image(image_file):
+    '''
+
+    :param image_file:
+    :return:
+    '''
     img = Image.open(image_file)
     return img
 
 
 def resize(img):
+    '''
+
+    :param img:
+    :return:
+    '''
     max_dim = 512
     shape = tf.cast(tf.shape(img)[:-1], tf.float32)
     long_dim = max(shape)
