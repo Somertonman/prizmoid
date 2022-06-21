@@ -53,6 +53,20 @@ def test_prepare_image_uploader():
     assert np.sum(prepare_image_uploader(t_img)) == 702898.5
 
 
+def tensor_to_image(tensor):
+    """
+    prepare image to tensorflow restyle algorithm
+    :param tensor:
+    :return:
+    """
+    tensor = tensor * 255
+    tensor = np.array(tensor, dtype=np.uint8)
+    if np.ndim(tensor) > 3:
+        assert tensor.shape[0] == 1
+        tensor = tensor[0]
+    return Image.fromarray(tensor)
+
+
 def prepare_image_url(user_image_from_url):
     """
     resizing image
